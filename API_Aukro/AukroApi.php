@@ -26,13 +26,50 @@ class Api {
     /** @var SoapClient */
     private $_client;
     
-    public function __construct($wsld = NULL) {
-        if(empty($wsld))
-        {
-            $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl';
-        }
+    /** @var integer */
+    private $_country_id = 56;
+    
+    /** @var integer */
+    private $_sysvar = 1;
+    
+    /** @var string */
+    private $_webapi_key;
+    
+    /** @var bool */
+    private $_debug = FALSE;
+    
+    public function __construct($login, $pass, $apiKey, $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl') {
         
-        $this->_client = new SoapClient($wsdl);
+        $this->_webapi_key = $apiKey;
+        
+        $client = new SoapClient($wsld);
+        $client->soap_defencoding = 'UTF-8';
+        $client->decode_utf8 = false;
+        
+        $this->_client = $client;
+    }
+    
+    /**
+     * @param integer $id
+     * @return Api
+     */
+    public function setCountryId($id)
+    {
+        $this->_country_id = (int) $id;
+        
+        return $this;
+    }
+    
+    public function getApiVerKey()
+    {
+        $params = array(
+            'sysvar' => $this->_sysvar,
+            'country-id' => 56,
+            'webapi-key' => $this->_webapi_key,
+            );
+        $output = $this->_client->__soapCall('doQuerySysStatus', $params); 
+        
+        return $output;
     }
     
 }
