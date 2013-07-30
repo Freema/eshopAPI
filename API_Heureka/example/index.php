@@ -1,7 +1,20 @@
 <?php
 
 require_once dirname(__FILE__) . '/../Api.php';
+$status = new \HeurekaAPI\Api('validate');
 
+
+function dump($var)
+{
+    if(!extension_loaded('xdebug'))
+    {
+        echo '<pre>' . var_dump($var) . '</pre>';
+    }
+    else
+    {
+        var_dump($var);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,17 +31,16 @@ require_once dirname(__FILE__) . '/../Api.php';
     <h2>GET payment/status</h2>
 
 <?php
-$status = new \HeurekaAPI\Api('validate');
-$response = $status->getPaymentStatus()->setOrderId(22)->execute();
+$response0 = $status->getPaymentStatus()->setOrderId(22)->execute();
 echo '<div><strong>Error:</strong></div>';
-var_dump($status->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 echo '</pre>';
 echo '<div><div><strong>Response:</strong></div>';
-var_dump($response->getDate());
-var_dump($response->getOrderId());
-var_dump($response->getStatus());
-var_dump($response->fetchAll());
-var_dump($response->fetchAll(TRUE));
+dump($response0->getDate());
+dump($response0->getOrderId());
+dump($response0->getStatus());
+dump($response0->fetchAll());
+dump($response0->fetchAll(TRUE));
 echo '</div>';
 ?>
     <h2>PUT order/status</h2>
@@ -40,21 +52,20 @@ echo '</div>';
     </p>
 <?php
 echo '<hr />';
-$status1 = new \HeurekaAPI\Api('validate');
-$response1 = $status1->putOrderStatus()
-                     ->setOrderId(22)
-                     ->setStatus(1)
-                     ->setTracnkingUrl('http://www.exmaple.com/?id=101010&transport')
-                     ->setNote('test')
-                     ->setExpectDeliver('2013-01-10')
-                     ->execute();
+$response1 = $status->putOrderStatus()
+                    ->setOrderId(22)
+                    ->setStatus(1)
+                    ->setTracnkingUrl('http://www.exmaple.com/?id=101010&transport')
+                    ->setNote('test')
+                    ->setExpectDeliver('2013-01-10')
+                    ->execute();
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status1->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 echo '<div><div><strong>Response:</strong></div>';
-var_dump($response1->getStatus());
-var_dump($response1->fetchAll());
-var_dump($response1->fetchAll(TRUE));
+dump($response1->getStatus());
+dump($response1->fetchAll());
+dump($response1->fetchAll(TRUE));
 echo '</div>';
 echo '<hr />';
 ?>
@@ -62,8 +73,7 @@ echo '<hr />';
     <p>Nastavení stavu platby na Heurece.</p>
     <p>Tato metoda slouží k nastavení platby při dobírce nebo platbě v hotovosti na pobočce obchodu. </p>
 <?php
-$status2 = new \HeurekaAPI\Api('validate');
-$response2 = $status2->putPaymentStatus()
+$response2 = $status->putPaymentStatus()
                      ->setOrderId(22)
                      ->setStatus(1)
                      ->setDate('2013-01-10') // akceptuje i DateTime object 
@@ -71,54 +81,52 @@ $response2 = $status2->putPaymentStatus()
 
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status2->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 echo '<div><div><strong>Response:</strong></div>';
-var_dump($response2->getStatus());
-var_dump($response2->fetchAll());
-var_dump($response2->fetchAll(TRUE));
+dump($response2->getStatus());
+dump($response2->fetchAll());
+dump($response2->fetchAll(TRUE));
 echo '</div>';
 echo '<hr />';
 ?>
     <h2>GET order/status</h2>
     <p>Informace o stavu objednávky a interním čísle objednávky na Heurece.</p>
 <?php
-$status3 = new \HeurekaAPI\Api('validate');
-$response3 = $status3->getOrderStatus()
+$response3 = $status->getOrderStatus()
                      ->setOrderId(22)
                      ->execute();
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status3->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 
 echo '<div><div><strong>Response:</strong></div>';
-var_dump($response3->getStatus());
-var_dump($response3->getOrderId());
-var_dump($response3->getInternalId());
-var_dump($response3->fetchAll());
-var_dump($response3->fetchAll(TRUE));
+dump($response3->getStatus());
+dump($response3->getOrderId());
+dump($response3->getInternalId());
+dump($response3->fetchAll());
+dump($response3->fetchAll(TRUE));
 echo '</div>';
 echo '<hr />';
 ?>
     <h2>GET stores</h2>
     <p>Informace o pobočkách / výdejních místech, které má obchod uložené na Heurece. </p>
 <?php
-$status4 = new \HeurekaAPI\Api('validate');
-$response4 = $status4->getStores()->execute();
+$response4 = $status->getStores()->execute();
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status4->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 
 echo '<div><div><strong>Response:</strong></div>';
 
 /* @var $store \HeurekaAPI\Response\GetStore */
 foreach ($response4 as $store)
 {
-    var_dump($store->getId());
-    var_dump($store->getCity());
-    var_dump($store->getName());
-    var_dump($store->getType());
-    var_dump($store->fetchAll());
-    var_dump($store->fetchAll(TRUE));
+    dump($store->getId());
+    dump($store->getCity());
+    dump($store->getName());
+    dump($store->getType());
+    dump($store->fetchAll());
+    dump($store->fetchAll(TRUE));
 }
 echo '</div>';
 echo '<hr />';
@@ -129,19 +137,18 @@ echo '<hr />';
 
 Informace o aktivaci / dekativaci jsou vždy na 30 minut uložné ve vyrovnávací paměti (cache). Pokud testujete stav obchodu pomocí cronu zvolte interval 30 minut a více. </p>
 <?php
-$status5 = new \HeurekaAPI\Api('validate');
-$response5 = $status5->getShopStatus()->execute();
+$response5 = $status->getShopStatus()->execute();
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status5->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 
 echo '<div><div><strong>Response:</strong></div>';
 
-var_dump($response5->getCreated());
-var_dump($response5->getMessage());
-var_dump($response5->getStatus());
-var_dump($response5->fetchAll());
-var_dump($response5->fetchAll(TRUE));
+dump($response5->getCreated());
+dump($response5->getMessage());
+dump($response5->getStatus());
+dump($response5->fetchAll());
+dump($response5->fetchAll(TRUE));
 echo '</div>';
 echo '<hr />';
 ?>
@@ -149,16 +156,15 @@ echo '<hr />';
     <p> Zaslání poznámky, které obchod vytvořil při procesu vyřizování objednávky.
 Tyto poznámky se zobrazují zákazníkovi u objednávky v jeho profilu. </p>
 <?php
-$status6 = new \HeurekaAPI\Api('validate');
-$response6 = $status6->postOrderNote()->setOrderId(22)->setNote('test')->execute();
+$response6 = $status->postOrderNote()->setOrderId(22)->setNote('test')->execute();
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status6->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 echo '<div><div><strong>Response:</strong></div>';
 
-var_dump($response6->getStatus());
-var_dump($response6->fetchAll());
-var_dump($response6->fetchAll(TRUE));
+dump($response6->getStatus());
+dump($response6->fetchAll());
+dump($response6->fetchAll(TRUE));
 echo '</div>';
 echo '<hr />';
 ?>
@@ -171,18 +177,16 @@ Maximální velikost souboru s fakturou je 3 MB a souboru musí být v PDF.
 
 Tato metoda předpokládá multipart data u parametru file. POST požadavek by měl mít nastaven Content-type na multipart / form-data. </p>
 <?php
-$status7 = new \HeurekaAPI\Api('validate');
-
-$response7 = $status7->postOrderInvoice()->setInvoiceFile('test.pdf')->setOrderId(22)->execute();
+$response7 = $status->postOrderInvoice()->setInvoiceFile('test.pdf')->setOrderId(22)->execute();
 
 
 echo '<div><strong>Error:</strong></div>';
-var_dump($status7->getContainer()->hasError());
+dump($status->getContainer()->hasError());
 echo '<div><div><strong>Response:</strong></div>';
 
-var_dump($response7->getStatus());
-var_dump($response7->fetchAll());
-var_dump($response7->fetchAll(TRUE));
+dump($response7->getStatus());
+dump($response7->fetchAll());
+dump($response7->fetchAll(TRUE));
 
 echo '</div>';
 
