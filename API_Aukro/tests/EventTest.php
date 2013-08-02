@@ -1,17 +1,31 @@
 <?php
-
-require 'TestCase.php';
+require_once 'TestCase.php';
 
 /**
- * Description of Response
+ * Description of ApiTest
  *
  * @author Tomáš Grasl <grasl.t@centrum.cz>
  */
 class EventTest extends TestCase {
     
-    public function testIfMethotGetApiVerInfoWork()
+    /** @var \AukroAPI\Event */
+    public $bootstrap;
+     
+    function setUp() {
+        parent::setUp();
+        
+        $this->bootstrap = $this->bootstrap->login();
+    }
+   
+    public function testMethodGetLoginInformationReturnObj()
     {
-        $output = $this->bootstrap->getApiVerInfo();
+        $output = $this->bootstrap->loginInformation();
+        $this->assertInstanceOf('AukroAPI\AukroApiResult', $output);     
+    }
+    
+    public function testMethodListOfSavedAuctionsReturnObj()
+    {
+        $output = $this->bootstrap->listOfSavedAuctions();
         $this->assertInstanceOf('AukroAPI\AukroApiResult', $output);     
     }
 }
