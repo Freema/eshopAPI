@@ -71,7 +71,7 @@ class PostOrderNote extends Container implements IPostOrderNote {
     }
 
     /**
-     * @return Response\PostOrderNote
+     * @return Response
      */
     public function execute()
     {
@@ -82,7 +82,7 @@ class PostOrderNote extends Container implements IPostOrderNote {
             $response = NULL;
         }
         
-        $return = new Response\PostOrderNote($response);         
+        return new Response($response);        
 
         return $return;
     }

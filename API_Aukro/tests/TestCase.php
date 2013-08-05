@@ -17,9 +17,9 @@ class TestCase extends PHPUnit_Framework_TestCase {
     /**
      *  connection constants
      */
-    const USER_NAME = '';
-    const USER_PASS = '';
-    const API_KEY = '';  
+    const USER_NAME = 'Freema25';
+    const USER_PASS = 'Freeman25';
+    const API_KEY = 'bbc47010';  
     
     /**
      * setUp test case

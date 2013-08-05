@@ -22,8 +22,16 @@ interface IEvents {
      * @retrun AukroApiResult
      */
     function listOfSavedAuctions();
+    
+    /**
+     * Získa id transakce
+     * @param array $auctions_arr
+     * @return \AukroAPI\AukroApiResult
+     */
+    function TransactionsId(array $auctions_arr);
 }
 
 interface IFormHelper {
     
+    function __construct(Api $client);
 }

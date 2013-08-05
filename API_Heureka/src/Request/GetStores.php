@@ -45,7 +45,7 @@ class GetStores extends Container implements IGetStores {
     }
 
     /**
-     * @return Response\GetStores
+     * @return Response
      */
     public function execute()
     {
@@ -56,12 +56,6 @@ class GetStores extends Container implements IGetStores {
             $response = NULL;
         }
         
-        $return = array();
-        foreach ($response as $data)
-        {
-            $return[] = new Response\GetStore($data);
-        }
-        
-        return $return;
+        return new Response($response);
     }
 }

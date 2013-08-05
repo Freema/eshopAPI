@@ -91,7 +91,7 @@ class GetPaymentStatus extends Container implements IGetPaymentStatus {
     }
     
     /**
-     * @return Response\GetPaymentStatus
+     * @return Response
      */
     public function execute()
     {
@@ -102,7 +102,7 @@ class GetPaymentStatus extends Container implements IGetPaymentStatus {
             $response = NULL;
         }
         
-        $return = new Response\GetPaymentStatus($response);        
+        $return = new Response($response);        
 
         return $return;
     }

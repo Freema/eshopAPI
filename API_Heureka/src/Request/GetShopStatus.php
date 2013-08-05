@@ -55,7 +55,7 @@ class GetShopStatus extends Container implements IGetShopStatus {
     }
 
     /**
-     * @return Response\GetOrderStatus
+     * @return Response
      */
     public function execute()
     {
@@ -67,7 +67,7 @@ class GetShopStatus extends Container implements IGetShopStatus {
             $response = NULL;
         }
         
-        $return = new Response\GetShopStatus($response);  
+        $return = new Response($response);  
         
         return $return;
     }

@@ -33,11 +33,19 @@ class Event implements IEvents {
         $this->_api_version = $apiVersionKey;
     }
 
+    /**
+     * Informace o přihlašeným uživateli.
+     * @return AukroApiResult
+     */
     final function loginInformation()
     {
         return new AukroApiResult($this->_loginInformation);
     }
     
+    /**
+    * Ověření zda se na učtě něco prodalo.
+    * @return AukroApiResult 
+    */
     final function logDeals()
     {
         $data = $this->loginInformation();
@@ -49,6 +57,28 @@ class Event implements IEvents {
         return new AukroApiResult($output);
     }
     
+    /**
+     * Získa id transakce
+     * @param array $auctions_arr
+     * @return \AukroAPI\AukroApiResult
+     */
+    final function TransactionsId(array $auctions_arr)
+    {
+        $data = $this->loginInformation();
+        $params = array(
+            'session-handle' => $data->session_handle_part,
+            'items-id-array' => $auctions_arr,
+            'user-role' => 'seller',            
+        );
+        
+        $output = $this->_client->__soapCall('doGetTransactionsIDs', $params);
+        return new AukroApiResult($output);
+    }
+    
+    /**
+    * Získání seznamu uložených aukcí. 
+    * @retrun AukroApiResult
+    */    
     final function listOfSavedAuctions()
     {
         $data = $this->loginInformation();
@@ -61,4 +91,6 @@ class Event implements IEvents {
         $output = $this->_client->__soapCall('doMyAccount2', $params);        
         return new AukroApiResult($output);
     }
+    
+    
 }

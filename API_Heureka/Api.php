@@ -22,15 +22,7 @@ require_once dirname(__FILE__) . '/src/Request/PostOrderNote.php';
 require_once dirname(__FILE__) . '/src/Request/PutOrderStatus.php';
 require_once dirname(__FILE__) . '/src/Request/PutPaymentStatus.php';
 
-require_once dirname(__FILE__) . '/src/Response/Response.php';
-require_once dirname(__FILE__) . '/src/Response/GetOrderStatus.php';
-require_once dirname(__FILE__) . '/src/Response/GetPaymentStatus.php';
-require_once dirname(__FILE__) . '/src/Response/GetShopStatus.php';
-require_once dirname(__FILE__) . '/src/Response/GetStore.php';
-require_once dirname(__FILE__) . '/src/Response/PostOrderInvoice.php';
-require_once dirname(__FILE__) . '/src/Response/PostOrderNote.php';
-require_once dirname(__FILE__) . '/src/Response/PutOrderStatus.php';
-require_once dirname(__FILE__) . '/src/Response/PutPaymentStatus.php';
+require_once dirname(__FILE__) . '/src/Response.php';
 
 /**
  * Check PHP configuration.

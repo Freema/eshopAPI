@@ -15,7 +15,7 @@ interface IGetOrderStatus {
     function setOrderId($id);
 
     /**
-     * @return Response\GetOrderStatus
+     * @return Response
      */
     function execute();
 }
@@ -32,7 +32,7 @@ interface IGetPaymentStatus {
     public function setOrderId($id);
     
     /**
-    * @return Response\GetPaymentStatus
+    * @return Response
     */
     public function execute();
 }
@@ -43,7 +43,7 @@ interface IGetPaymentStatus {
 interface IGetShopStatus {
 
     /**
-     * @return Response\GetShopStatus
+     * @return Response
      */
     function execute();
 }
@@ -54,7 +54,7 @@ interface IGetShopStatus {
 interface IGetStores {
 
     /**
-     * @return array
+     * @return Response
      */
     function execute();
 }
@@ -77,7 +77,7 @@ interface IPostOrderInvoice {
     public function setInvoiceFile($file);
     
     /**
-    * @return Response\PostOrderInvoice
+    * @return Response
     */
     public function execute();    
 }
@@ -100,7 +100,7 @@ interface IPostOrderNote {
     public function setNote($status);
     
     /**
-    * @return Response\PostOrderNote
+    * @return Response
     */
     public function execute();    
 }
@@ -142,7 +142,7 @@ interface IPutOrderStatus {
     function setExpectDeliver($delivary);
 
     /**
-     * @return Response\PutOrderStatus
+     * @return Response
      */
     function execute();
 }
@@ -171,7 +171,7 @@ interface IPutPaymentStatus {
     public function setDate($date);   
 
     /**
-    * @return Response\PutPaymentStatus
+    * @return Response
     */
     public function execute();    
 }

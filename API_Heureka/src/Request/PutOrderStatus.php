@@ -64,7 +64,7 @@ class PutOrderStatus extends GetOrderStatus implements IPutOrderStatus {
     }
 
     /**
-     * @return Response\PutOrderStatus
+     * @return Response
      */
     public function execute()
     {
@@ -76,7 +76,7 @@ class PutOrderStatus extends GetOrderStatus implements IPutOrderStatus {
             $response = NULL;
         }
         
-        $return = new Response\PutOrderStatus($response);         
+        return new Response($response);        
 
         return $return;
     }

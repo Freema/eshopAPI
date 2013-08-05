@@ -79,7 +79,7 @@ class PostOrderInvoice extends Container implements IPostOrderInvoice {
     }
 
     /**
-     * @return Response\PostOrderInvoice
+     * @return Response
      */
     public function execute()
     {
@@ -90,8 +90,6 @@ class PostOrderInvoice extends Container implements IPostOrderInvoice {
             $response = NULL;
         }
         
-        $return = new Response\PostOrderInvoice($response);         
-
-        return $return;
+        return new Response($response);       
     }
 }

@@ -71,7 +71,7 @@ class GetOrderStatus extends Container implements IGetOrderStatus {
     }
 
     /**
-     * @return Response\GetOrderStatus
+     * @return \Response
      */
     public function execute()
     {
@@ -83,7 +83,7 @@ class GetOrderStatus extends Container implements IGetOrderStatus {
             $response = NULL;
         }
         
-        $return = new Response\GetOrderStatus($response);  
+        $return = new Response($response);  
         
         return $return;
     }

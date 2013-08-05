@@ -47,7 +47,7 @@ class PutPaymentStatus extends GetPaymentStatus implements IPutPaymentStatus {
     }
     
     /**
-     * @return Response\PutPaymentStatus
+     * @return Response
      */
     public function execute()
     {
@@ -58,7 +58,7 @@ class PutPaymentStatus extends GetPaymentStatus implements IPutPaymentStatus {
             $response = NULL;
         }
         
-        $return = new Response\PutPaymentStatus($response);        
+        return new Response($response);      
 
         return $return;
     }    
