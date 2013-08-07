@@ -51,9 +51,6 @@ class Api extends SoapClient {
     
     /** @var array */
     private $_api_version;
-    
-    /** @var FormHelper */
-    public $form_helper;
 
     /** @var bool */
     private $_debug = FALSE;
@@ -66,7 +63,7 @@ class Api extends SoapClient {
      * @param string $apiKey
      * @param string $wsld
      */
-    function __construct($login, $pass, $apiKey, $country_id = 56, $form_helper = self::HTML_FORM_HELPER, $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl') {
+    function __construct($login, $pass, $apiKey, $country_id = 56, $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl') {
         parent::SoapClient($wsld);
        
         $this->_login = $login;
@@ -76,22 +73,17 @@ class Api extends SoapClient {
         $this->soap_defencoding = 'UTF-8';
         $this->decode_utf8 = false;
         
-        switch ($form_helper) {
-            case self::HTML_FORM_HELPER:
-
-                break;
-            case self::NETTE_FORM_HELPER:
-                $this->form_helper = new NetteFormHelper($this);
-                break;
-            case self::SYPHONY_FORM_HELPER:
-
-                break;
-            default:
-                throw new Exception('Form helper is no isset.');
-                break;
-        }
         $this->_api_version = $this->_setApiVerKey();
     }
+    
+    /**
+     * @return \AukroAPI\NetteFormHelper
+     */
+    public function getNetteFormHelper()
+    {
+        return new NetteFormHelper($this);
+    }
+    
     
     /**
      * @return integer

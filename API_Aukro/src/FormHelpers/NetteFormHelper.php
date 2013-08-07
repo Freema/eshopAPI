@@ -1,7 +1,7 @@
 <?php
 namespace AukroAPI;
 
-use Nette\Application\UI\Form;
+use Nette\Forms\Form;
 /**
  * Description of AukroApiEvent
  * Events that needs a login to the application
@@ -33,10 +33,18 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
         $this->_formContainer = $form;
     }
     
-    public function buildFormFields($cat_id)
+    /**
+     * Helper method to create API form
+     * 
+     * @param integer $cat_id
+     * @return Form
+     */
+    public function buildFormFields($cat_id, $method, $action)
     {
         $data = $this->_client->sellFormFields($cat_id);
         
+        $this->_formContainer->setMethod($method);
+        $this->_formContainer->setAction($action);
         foreach ($data->sell_form_fields_list as $value)
         {
             $value = (array) $value;
@@ -47,13 +55,10 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                     $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
                     break;
                 case 2:
+                case 3:
+    
                     $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
                                         ->addRule(Form::INTEGER, NULL)
-                                        ->addRule(Form::RANGE, NULL, array($value['sell-min-value'],$value['sell-max-value']));
-                    break;
-                case 3:
-                    $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
-                                        ->addRule(Form::FLOAT, NULL)
                                         ->addRule(Form::RANGE, NULL, array($value['sell-min-value'],$value['sell-max-value']));
                     break;
                 case 4:
@@ -77,15 +82,13 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                     $container = $form  ->addCheckbox('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
                     break;
                 case 7:
-                    $container = $form  ->addImage('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
+                    $container = $form  ->addUpload('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
                                         ->addRule(Form::IMAGE, NULL);
                     break;
                 case 8:
                     $container = $form  ->addTextArea('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
                     break;
                 case 9:
-                    $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
-                    break;
                 case 13:
                     $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
                     break;
@@ -97,6 +100,8 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                               ->setDisabled(true);
             }
         }
+        
+        $this->_formContainer->addSubmit('add', 'upravit');
         
         return $form = $this->_formContainer;
     }

@@ -35,12 +35,11 @@ $response0 = $status->getPaymentStatus()->setOrderId(22)->execute();
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
 echo '</pre>';
-echo '<div><div><strong>Response:</strong></div>';
-dump($response0->getDate());
-dump($response0->getOrderId());
-dump($response0->getStatus());
-dump($response0->fetchAll());
-dump($response0->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response0);
+echo '</div>';
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response0->toArray());
 echo '</div>';
 ?>
     <h2>PUT order/status</h2>
@@ -62,10 +61,10 @@ $response1 = $status->putOrderStatus()
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-echo '<div><div><strong>Response:</strong></div>';
-dump($response1->getStatus());
-dump($response1->fetchAll());
-dump($response1->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response1);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response1->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -82,10 +81,10 @@ $response2 = $status->putPaymentStatus()
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-echo '<div><div><strong>Response:</strong></div>';
-dump($response2->getStatus());
-dump($response2->fetchAll());
-dump($response2->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response2);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response2->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -98,13 +97,10 @@ $response3 = $status->getOrderStatus()
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-
-echo '<div><div><strong>Response:</strong></div>';
-dump($response3->getStatus());
-dump($response3->getOrderId());
-dump($response3->getInternalId());
-dump($response3->fetchAll());
-dump($response3->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response3);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response3->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -115,19 +111,10 @@ $response4 = $status->getStores()->execute();
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-
-echo '<div><div><strong>Response:</strong></div>';
-
-/* @var $store \HeurekaAPI\Response\GetStore */
-foreach ($response4 as $store)
-{
-    dump($store->getId());
-    dump($store->getCity());
-    dump($store->getName());
-    dump($store->getType());
-    dump($store->fetchAll());
-    dump($store->fetchAll(TRUE));
-}
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response4);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response4->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -141,14 +128,10 @@ $response5 = $status->getShopStatus()->execute();
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-
-echo '<div><div><strong>Response:</strong></div>';
-
-dump($response5->getCreated());
-dump($response5->getMessage());
-dump($response5->getStatus());
-dump($response5->fetchAll());
-dump($response5->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response5);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response5->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -160,11 +143,10 @@ $response6 = $status->postOrderNote()->setOrderId(22)->setNote('test')->execute(
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-echo '<div><div><strong>Response:</strong></div>';
-
-dump($response6->getStatus());
-dump($response6->fetchAll());
-dump($response6->fetchAll(TRUE));
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response6);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response6->toArray());
 echo '</div>';
 echo '<hr />';
 ?>
@@ -182,12 +164,10 @@ $response7 = $status->postOrderInvoice()->setInvoiceFile('test.pdf')->setOrderId
 
 echo '<div><strong>Error:</strong></div>';
 dump($status->getContainer()->hasError());
-echo '<div><div><strong>Response:</strong></div>';
-
-dump($response7->getStatus());
-dump($response7->fetchAll());
-dump($response7->fetchAll(TRUE));
-
+echo '<div><div><strong>Response in object:</strong></div>';
+dump($response7);
+echo '<div><div><strong>Response in array:</strong></div>';
+dump($response7->toArray());
 echo '</div>';
 
 ?>    
