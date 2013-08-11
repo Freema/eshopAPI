@@ -84,7 +84,14 @@ class Api extends SoapClient {
         return new NetteFormHelper($this);
     }
     
-    
+    /**
+     * @return \AukroAPI\NetteFormHelper
+     */
+    public function getBaseFormHelper()
+    {
+        return new BaseFormHelper($this); 
+    }
+            
     /**
      * @return integer
      */

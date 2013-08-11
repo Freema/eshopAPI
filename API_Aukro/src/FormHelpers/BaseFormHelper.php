@@ -40,6 +40,171 @@ class BaseFormHelper {
         $this->buildTree($tree);        
         return $this->_tree;
     }
+    
+    /**
+     * Helper method to create API form
+     * 
+     * @param array $params
+     * @return array
+     */
+    public function buildFormFields(array $params)
+    {
+        if(isset($params['cat_id']))
+        {
+            $data = $this->_client->sellFormFields($params['cat_id']);
+        }
+        else
+        {
+            throw new Exception('Param cat_id is not isset!');
+        }
+        
+        foreach ($data->sell_form_fields_list as $value)
+        {
+            $value = (array) $value;
+            switch ($value['sell-form-type']) {
+                case 1:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field' => 'input',
+                        'type'  => 'text',
+                    );
+                    break;
+                case 2:
+                case 3:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field' => 'input',
+                        'type'  => 'text',
+                        'rule'  => array (
+                            'integer'   => 'integer',
+                            'range'     => array (
+                                        'min'   => $value['sell-min-value'],
+                                        'max'   => $value['sell-max-value'],
+                            ),
+                        ),
+                    );
+                    break;
+                case 4:
+                    $form_desc = (array) explode('|', $value['sell-form-desc']);
+                    $form_opts = (array) explode('|', $value['sell-form-opts-values']);
+                    $data = array_combine($form_opts, $form_desc);
+                    $default = array_search($value['sell-form-opts-values'], $data);
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field'     => 'select',
+                        'options'   => $data,
+                        'default'   => $default,
+                    );
+                    break;
+                case 5:
+                    $form_desc = (array) explode('|', $value['sell-form-desc']);
+                    $form_opts = (array) explode('|', $value['sell-form-opts-values']);
+                    $data = array_combine($form_opts, $form_desc);
+                    $default = array_search($value['sell-form-opts-values'], $data);
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field'     => 'input',
+                        'type'      => 'radio',
+                        'options'   => $data,
+                        'default'   => $default,
+                    );
+                    break;
+                case 6:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field'     => 'input',
+                        'type'      => 'checkbox',
+                    );
+
+                    break;
+                case 7:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field'     => 'input',
+                        'type'      => 'file',
+                        'rule'      => 'file',
+                    );
+                    break;
+                case 8:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field'     => 'textarea',
+                    );
+                    break;
+                case 9:
+                case 13:
+                    $form['form_id_' . $value['sell-form-id']] = array (
+                        'field' => 'input',
+                        'type'  => 'text',
+                    );
+                    break;
+            }
+            $form['form_id_' . $value['sell-form-id']]['label'] = $value['sell-form-title'];
+            
+            switch ($value['sell-form-id']) {
+                case 2:
+                    unset($form['form_id_' . $value['sell-form-id']]['label']);
+                    $form['form_id_' . $value['sell-form-id']]['type'] = 'hidden';
+                    $form['form_id_' . $value['sell-form-id']]['value'] = $params['cat_id'];
+            }
+        }
+        
+        return $form;
+    }    
+    
+    public function sendNewAuction($form)
+    {
+        if(!is_array($form))
+        {
+            throw new Exception('Argument must be array.');
+        }
+        if(!isset($form['form_id_2']))
+        {
+            throw new \AukroAPI('Neznama kategorie');
+        }
+        $data = $this->_client->sellFormFields($form['form_id_2']);
+        
+        $fields_arr = array();
+        
+        foreach ($data->sell_form_fields_list as $value)
+        {
+            $value = (array) $value;
+            $id = $value['sell-form-id'];
+            if(isset($form['form_id_' . $id]))
+            {
+                $build = array(
+                    'fid' => $id,
+                    'fvalue-string' => '',
+                    'fvalue-int' => 0,
+                    'fvalue-float' => (float) 0,
+                    'fvalue-image' => 0,
+                    'fvalue-datetime' => 0,
+                    'fvalue-date' => 0,
+                    'fvalue-range-int' => 0,
+                    'fvalue-range-float' => 0,
+                    'fvalue-range-date' => 0
+                    );
+
+                    switch ($value['sell-form-res-type']) {
+                        case 1:
+                            $build['fvalue-string'] = $form['form_id_' . $id];
+                            break;
+                        case 2:
+                            $build['fvalue-int'] = (int) $form['form_id_' . $id];                            
+                            break;
+                        case 3:
+                            $build['fvalue-float'] = (float) $form['form_id_' . $id];                            
+                            break;
+                        case 7:
+                            $build['fvalue-image'] = $form['form_id_' . $id];                            
+                            break;
+                        case 9:
+                            $build['fvalue-datetime'] = $form['form_id_' . $id];                            
+                            break;
+                        case 13:
+                            $build['fvalue-date'] = $form['form_id_' . $id];                            
+                            break;
+                    }
+                
+                $fields_arr[] = $build; 
+            }
+        }
+        
+        return $fields_arr;
+    }
 
     protected function buildTree(array $values, $name = null)
     {

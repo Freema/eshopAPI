@@ -28,7 +28,7 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
      * 
      * @param Form $form
      */
-    public function setFormContainer(Form $form)
+    public function setFormContainer($form)
     {
         $this->_formContainer = $form;
     }
@@ -36,15 +36,36 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
     /**
      * Helper method to create API form
      * 
-     * @param integer $cat_id
+     * @param array $params
      * @return Form
      */
-    public function buildFormFields($cat_id, $method, $action)
+    public function buildFormFields(array $params)
     {
-        $data = $this->_client->sellFormFields($cat_id);
-        
-        $this->_formContainer->setMethod($method);
-        $this->_formContainer->setAction($action);
+        if(isset($params['cat_id']))
+        {
+            $data = $this->_client->sellFormFields($params['cat_id']);
+        }
+        else
+        {
+            throw new Exception('Param cat_id is not isset!');
+        }
+        if(isset($params['method']))
+        {
+            $this->_formContainer->setMethod($params['method']);
+        }
+        else
+        {
+            throw new Exception('Param method is not isset!');
+        }
+        if(isset($params['action']))
+        {
+            $this->_formContainer->setAction($params['action']);
+        }
+        else
+        {
+            throw new Exception('Param action is not isset!');
+        }
+
         foreach ($data->sell_form_fields_list as $value)
         {
             $value = (array) $value;
@@ -96,12 +117,12 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
             
             switch ($value['sell-form-id']) {
                 case 2:
-                    $container->setDefaultValue($cat_id)
+                    $container->setDefaultValue($params['cat_id'])
                               ->setDisabled(true);
             }
         }
         
-        $this->_formContainer->addSubmit('add', 'upravit');
+        $this->_formContainer->addSubmit('add', 'Odeslat')->setAttribute('class', 'btn btn-success');;
         
         return $form = $this->_formContainer;
     }
