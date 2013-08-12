@@ -28,7 +28,29 @@ interface IEvents {
      * @param array $auctions_arr
      * @return \AukroAPI\AukroApiResult
      */
-    function TransactionsId(array $auctions_arr);
+    function transactionsId(array $auctions_arr);
+    
+    /**
+     * Pro samostatné vystavení položky na aukci!
+     * @param array $fieldsArr
+     * @throws AukroApiException
+     * @return \AukroAPI\AukroApiResult
+     */
+    function newAuctionCreate(array $fieldsArr);
+    
+    /**
+     * Informace vyplněné kupujícími ve formuláři
+     * @param type $trans_ids
+     * @return \AukroAPI\AukroApiResult
+     */
+    function transactionsInformation($trans_ids);  
+    
+    /**
+     * Informace o kupujicím
+     * @param array $auctions_arr
+     * @return \AukroAPI\AukroApiResult
+     */
+     function sellerInformation(array $auctions_arr);
 }
 
 interface IFormHelper {

@@ -145,7 +145,7 @@ class Api extends SoapClient {
     public function login()
     {
         $pass_hash = self::AkroHashPassword($this->_pass);
-        
+
         $params = array(
             'user-login' => $this->_login,
             'user-hash-password' => $pass_hash,
@@ -244,3 +244,5 @@ class Api extends SoapClient {
         
     }
 }
+
+class AukroApiException extends Exception {}
