@@ -1,5 +1,7 @@
 <?php
 namespace AukroAPI;
+
+use stdClass;
 /**
  * Description of AukroApiEvent
  * Events that needs a login to the application
@@ -158,6 +160,17 @@ class BaseFormHelper {
         $data = $this->_client->sellFormFields($form['form_id_2']);
         
         $fields_arr = array();
+        $empty = new stdClass();
+        $empty->{'fid'} = 0;
+        $empty->{'fvalue-string'} = '';
+        $empty->{'fvalue-int'} = 0;
+        $empty->{'fvalue-float'} = (float) 0;
+        $empty->{'fvalue-image'} = 0;
+        $empty->{'fvalue-datetime'} = 0;
+        $empty->{'fvalue-date'} = 0;
+        $empty->{'fvalue-range-int'} = 0;
+        $empty->{'fvalue-range-float'} = 0;
+        $empty->{'fvalue-range-date'} = 0;
         
         foreach ($data->sell_form_fields_list as $value)
         {
@@ -165,41 +178,31 @@ class BaseFormHelper {
             $id = $value['sell-form-id'];
             if(isset($form['form_id_' . $id]))
             {
-                $build = array(
-                    'fid' => $id,
-                    'fvalue-string' => '',
-                    'fvalue-int' => 0,
-                    'fvalue-float' => (float) 0,
-                    'fvalue-image' => 0,
-                    'fvalue-datetime' => 0,
-                    'fvalue-date' => 0,
-                    'fvalue-range-int' => 0,
-                    'fvalue-range-float' => 0,
-                    'fvalue-range-date' => 0
-                    );
+                $field = clone $empty;
+                $field->{'fid'} = $id;
 
-                    switch ($value['sell-form-res-type']) {
-                        case 1:
-                            $build['fvalue-string'] = $form['form_id_' . $id];
-                            break;
-                        case 2:
-                            $build['fvalue-int'] = (int) $form['form_id_' . $id];                            
-                            break;
-                        case 3:
-                            $build['fvalue-float'] = (float) $form['form_id_' . $id];                            
-                            break;
-                        case 7:
-                            $build['fvalue-image'] = $form['form_id_' . $id];                            
-                            break;
-                        case 9:
-                            $build['fvalue-datetime'] = $form['form_id_' . $id];                            
-                            break;
-                        case 13:
-                            $build['fvalue-date'] = $form['form_id_' . $id];                            
-                            break;
+                switch ($value['sell-form-res-type']) {
+                    case 1:
+                        $field->{'fvalue-string'} =  $form['form_id_' . $id];
+                        break;
+                    case 2:
+                        $field->{'fvalue-int'} =  $form['form_id_' . $id];
+                        break;
+                    case 3:
+                        $field->{'fvalue-float'} =  $form['form_id_' . $id];
+                        break;
+                    case 7:
+                        $field->{'fvalue-image'} =  $form['form_id_' . $id];
+                        break;
+                    case 9:
+                        $field->{'fvalue-datetime'} =  $form['form_id_' . $id];
+                        break;
+                    case 13:
+                        $field->{'fvalue-date'} =  $form['form_id_' . $id];
+                        break;
                     }
                 
-                $fields_arr[] = $build; 
+                $fields_arr[] = (array) $field; 
             }
         }
         

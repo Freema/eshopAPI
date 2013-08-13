@@ -51,6 +51,19 @@ interface IEvents {
      * @return \AukroAPI\AukroApiResult
      */
      function sellerInformation(array $auctions_arr);
+     
+    /**
+     * Vypiše detail konkrétní aukce
+     * @param type $auction_id
+     * @return \AukroAPI\AukroApiResult
+     */
+     function showAuctionInfo($auction_id);
+     
+    /**
+     * Aktuální stav účtu
+     * @return \AukroAPI\AukroApiResult
+     */
+    function acontInfo();     
 }
 
 interface IFormHelper {

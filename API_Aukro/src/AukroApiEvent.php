@@ -158,10 +158,40 @@ class Event implements IEvents {
         $data = $this->loginInformation();
         $params = array(
             'session-handle' => $data->session_handle_part,
-            'fields' => $fields_arr);
+            'fields' => $fieldsArr);
         
         $output = $this->_client->__soapCall('doNewAuctionExt', $params);
         
         return new AukroApiResult($output);
+    }
+    
+    /**
+     * Vypiše detail konkrétní aukce
+     * @param type $auction_id
+     * @return \AukroAPI\AukroApiResult
+     */
+    final function showAuctionInfo($auction_id)
+    {
+        $data = $this->loginInformation();
+        $params = array(
+            'session-handle' => $data->session_handle_part,
+            'item-id' => $auction_id);
+        $output = $this->_client->__soapCall('doShowItemInfoExt', $params); 
+        
+        return new AukroApiResult($output);
+    }
+    
+    /**
+     * Aktuální stav účtu
+     * @return \AukroAPI\AukroApiResult
+     */
+    final function acontInfo()
+    {
+        $data = $this->loginInformation();
+        $params = array(
+            'session-handle' => $data->session_handle_part);
+        $output = $this->_client->__soapCall('doMyBilling', $params); 
+        
+        return new AukroApiResult($output);        
     }
 }
