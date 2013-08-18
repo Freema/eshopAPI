@@ -8,6 +8,7 @@ use SoapClient;
  * include container!
  */
 require_once dirname(__FILE__) . '/src/interface.php';
+require_once dirname(__FILE__) . '/src/AukroApiContainer.php';
 require_once dirname(__FILE__) . '/src/AukroApiEvent.php';
 require_once dirname(__FILE__) . '/src/AukroApiResult.php';
 require_once dirname(__FILE__) . '/src/FormHelpers/BaseFormHelper.php';
@@ -27,8 +28,12 @@ if (!extension_loaded('openssl')) {
 if (!extension_loaded('soap')) {
     throw new Exception('The SOAP extension is not available.');
 }  
-
-class Api extends SoapClient {
+/**
+ * Description of AukroApiContainer
+ *
+ * @author Tomáš Grasl <grasl.t@centrum.cz>
+ */
+class Api extends AukroApiContainer {
    
     const HTML_FORM_HELPER = 'html_form';
     const NETTE_FORM_HELPER = 'nette_form';
@@ -51,17 +56,12 @@ class Api extends SoapClient {
     
     /** @var array */
     private $_api_version;
-
-    /** @var bool */
-    private $_debug = FALSE;
     
     /**
-     * 
-     * 
-     * @param string $login
-     * @param string $pass
-     * @param string $apiKey
-     * @param string $wsld
+     * @param string $login Přihlašovací jméno do aukro shopu
+     * @param string $pass Přihlašovací heslo do aukro shopu
+     * @param string $apiKey Klič pro aukro api který dostanete na aukro podpoře
+     * @param string $wsld Defaultně je nastaveno 56(Aukro.cz) pro testování muže být použito 228(http://www.testwebapi.pl/) 
      */
     function __construct($login, $pass, $apiKey, $country_id = 56, $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl') {
         parent::SoapClient($wsld);
@@ -138,7 +138,7 @@ class Api extends SoapClient {
     }
 
     /**
-     * prihlaseni k WebAPI
+     * Přihlášení k WebAPI
      * 
      * @return IEvents
      */
@@ -176,7 +176,7 @@ class Api extends SoapClient {
     }
     
     /**
-     * ziskani verze WebAPI
+     * Získaní verze WebAPI
      * 
      * @return \AukroAPI\AukroApiResult
      */
@@ -238,11 +238,7 @@ class Api extends SoapClient {
         
         return $password;
     }
-    
-    function __call($function_name, $arguments) {
-        array('doQuerySysStatus');
-        
-    }
 }
+
 
 class AukroApiException extends Exception {}

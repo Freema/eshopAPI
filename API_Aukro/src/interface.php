@@ -24,14 +24,14 @@ interface IEvents {
     function listOfSavedAuctions();
     
     /**
-     * Získa id transakce
+     * Získa id transakce.
      * @param array $auctions_arr
      * @return \AukroAPI\AukroApiResult
      */
     function transactionsId(array $auctions_arr);
     
     /**
-     * Pro samostatné vystavení položky na aukci!
+     * Pro samostatné vystavení položky na aukci.
      * @param array $fieldsArr
      * @throws AukroApiException
      * @return \AukroAPI\AukroApiResult
@@ -39,28 +39,28 @@ interface IEvents {
     function newAuctionCreate(array $fieldsArr);
     
     /**
-     * Informace vyplněné kupujícími ve formuláři
+     * Informace vyplněné kupujícími ve formuláři.
      * @param type $trans_ids
      * @return \AukroAPI\AukroApiResult
      */
     function transactionsInformation($trans_ids);  
     
     /**
-     * Informace o kupujicím
+     * Informace o kupujicím.
      * @param array $auctions_arr
      * @return \AukroAPI\AukroApiResult
      */
      function sellerInformation(array $auctions_arr);
      
     /**
-     * Vypiše detail konkrétní aukce
+     * Vypiše detail konkrétní aukce.
      * @param type $auction_id
      * @return \AukroAPI\AukroApiResult
      */
      function showAuctionInfo($auction_id);
      
     /**
-     * Aktuální stav účtu
+     * Aktuální stav účtu.
      * @return \AukroAPI\AukroApiResult
      */
     function acontInfo();     
