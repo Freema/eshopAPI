@@ -140,6 +140,13 @@ class AukroApiContainer extends SoapClient {
         'doGetSystemTime',
 );
     
+    /**
+     * @param string $wsdl
+     */
+    public function __construct($wsdl) {
+        parent::SoapClient($wsdl);
+    }
+    
     function __call($function_name, $arguments = NULL) {
 
         if(array_search($function_name, $this->_webApiFunction))

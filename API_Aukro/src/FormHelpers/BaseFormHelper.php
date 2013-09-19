@@ -16,7 +16,10 @@ class BaseFormHelper {
     
     /** @var array */
     private $_tree = array();
-   
+    
+    /** @var AukroApiResult */
+    protected $_form_fields;
+            
     function __construct(Api $client) {
         $this->_client = $client;
     }    
@@ -43,6 +46,20 @@ class BaseFormHelper {
         return $this->_tree;
     }
     
+    protected function getFormFields($cat_id)
+    {
+        if(!isset($this->_form_fields))
+        {
+            $this->_form_fields = $this->_client->sellFormFields($cat_id);
+            return $this->_form_fields;
+        }
+        else
+        {
+            return $this->_form_fields;
+        }
+    }
+
+
     /**
      * Helper method to create API form
      * 
@@ -53,7 +70,7 @@ class BaseFormHelper {
     {
         if(isset($params['cat_id']))
         {
-            $data = $this->_client->sellFormFields($params['cat_id']);
+            $data = $this->getFormFields($params['cat_id']);
         }
         else
         {
@@ -157,7 +174,7 @@ class BaseFormHelper {
         {
             throw new \AukroAPI('Neznama kategorie');
         }
-        $data = $this->_client->sellFormFields($form['form_id_2']);
+        $data = $this->getFormFields($form['form_id_2']);
         
         $fields_arr = array();
         $empty = new stdClass();

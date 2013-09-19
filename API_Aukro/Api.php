@@ -2,7 +2,6 @@
 namespace AukroAPI;
 
 use Exception;
-use SoapClient;
 
 /**
  * include container!
@@ -33,7 +32,7 @@ if (!extension_loaded('soap')) {
  *
  * @author Tomáš Grasl <grasl.t@centrum.cz>
  */
-class Api extends AukroApiContainer {
+class Api {
    
     const HTML_FORM_HELPER = 'html_form';
     const NETTE_FORM_HELPER = 'nette_form';
@@ -57,6 +56,12 @@ class Api extends AukroApiContainer {
     /** @var array */
     private $_api_version;
     
+    /** @var string */
+    private $_wsld;
+    
+    /** @var AukroApiContainer */
+    private $_container;
+    
     /**
      * @param string $login Přihlašovací jméno do aukro shopu
      * @param string $pass Přihlašovací heslo do aukro shopu
@@ -64,15 +69,15 @@ class Api extends AukroApiContainer {
      * @param string $wsld Defaultně je nastaveno 56(Aukro.cz) pro testování muže být použito 228(http://www.testwebapi.pl/) 
      */
     function __construct($login, $pass, $apiKey, $country_id = 56, $wsld = 'http://webapi.aukro.cz/uploader.php?wsdl') {
-        parent::SoapClient($wsld);
        
         $this->_login = $login;
         $this->_pass = $pass;
         $this->_webapi_key = $apiKey;
         $this->_country_id = $country_id;
+        $this->_wsld = $wsld;
         $this->soap_defencoding = 'UTF-8';
         $this->decode_utf8 = false;
-        
+
         $this->_api_version = $this->_setApiVerKey();
     }
     
@@ -90,6 +95,22 @@ class Api extends AukroApiContainer {
     public function getBaseFormHelper()
     {
         return new BaseFormHelper($this); 
+    }
+    
+    /**
+     * @return AukroApiContainer
+     */
+    public function getApiContainer()
+    {
+        if($this->_container instanceof AukroApiContainer || empty($this->_container))
+        {
+            $this->_container = new AukroApiContainer($this->_wsld);
+            return $this->_container;
+        }
+        else
+        {
+            return $this->_container;
+        }
     }
             
     /**
@@ -152,15 +173,14 @@ class Api extends AukroApiContainer {
             'country-code' => $this->_country_id,
             'webapi-key' => $this->_webapi_key,
             'local-version' => $this->_api_version['ver-key']);
-        $output = $this->__soapCall('doLoginEnc', $params);
-        $event = new Event($this, $output, $this->_api_version['ver-key']);
+        $output = $this->getApiContainer()->__soapCall('doLoginEnc', $params);
+        $event = new Event($this->getApiContainer(), $output, $this->_api_version['ver-key']);
         return $event;
     }
     
     /**
      * Set Api key value
      * 
-     * @param SoapClient $client
      * @return array
      */
     private function _setApiVerKey()
@@ -170,7 +190,7 @@ class Api extends AukroApiContainer {
             'country-id' => $this->_country_id,
             'webapi-key' => $this->_webapi_key,
             );
-        $output = $this->__soapCall('doQuerySysStatus', $params); 
+        $output = $this->getApiContainer()->__soapCall('doQuerySysStatus', $params); 
                 
         return $output;
     }
@@ -198,7 +218,7 @@ class Api extends AukroApiContainer {
           'webapi-key'      => $this->getWebApiKey(),  
         );
         
-        $output = $this->__soapCall('doGetCatsData', $params);
+        $output = $this->getApiContainer()->__soapCall('doGetCatsData', $params);
         
         return new AukroApiResult($output);        
     }    
@@ -216,7 +236,7 @@ class Api extends AukroApiContainer {
             'country-id' => $this->_country_id,
             'cat-id' => $cat_id
         );
-        $output = $this->__soapCall('doGetSellFormFieldsForCategory', $params);        
+        $output = $this->getApiContainer()->__soapCall('doGetSellFormFieldsForCategory', $params);        
         
         return new AukroApiResult($output);
     }

@@ -13,7 +13,7 @@ class Event implements IEvents {
     /** API options */
     const ACCONT_TYPE = 'watch_cl';
     
-    /** @var \HeurekaAPI\Api */
+    /** @var AukroApiContainer */
     private $_client;
    
     /** @var integer */
@@ -26,7 +26,7 @@ class Event implements IEvents {
      * @param array $loginInformation
      * @param integer $apiVersionKey
      */
-    function __construct(Api $client, $loginInformation, $apiVersionKey) {
+    function __construct(AukroApiContainer $client, $loginInformation, $apiVersionKey) {
         
         $this->_client = $client;
         $this->_loginInformation = $loginInformation;

@@ -1,7 +1,7 @@
 <?php
 namespace AukroAPI;
 
-use Nette\Forms\Form;
+use Nette\Application\UI\Form;
 /**
  * Description of AukroApiEvent
  * Events that needs a login to the application
@@ -13,6 +13,9 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
     
     /** @var Form */
     private $_formContainer;
+    
+    /** @var bool */
+    public $formSubmitButton = TRUE;
     
     /**
     * @param array $loginInformation
@@ -43,28 +46,17 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
     {
         if(isset($params['cat_id']))
         {
-            $data = $this->_client->sellFormFields($params['cat_id']);
+            $data = $this->getFormFields($params['cat_id']);
         }
         else
         {
             throw new Exception('Param cat_id is not isset!');
         }
         if(isset($params['method']))
-        {
             $this->_formContainer->setMethod($params['method']);
-        }
-        else
-        {
-            throw new Exception('Param method is not isset!');
-        }
+
         if(isset($params['action']))
-        {
             $this->_formContainer->setAction($params['action']);
-        }
-        else
-        {
-            throw new Exception('Param action is not isset!');
-        }
 
         foreach ($data->sell_form_fields_list as $value)
         {
@@ -77,10 +69,18 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                     break;
                 case 2:
                 case 3:
-    
-                    $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
-                                        ->addRule(Form::INTEGER, NULL)
-                                        ->addRule(Form::RANGE, NULL, array($value['sell-min-value'],$value['sell-max-value']));
+                    if($value['sell-form-id'] === 2)
+                    {
+                        $container = $form  ->addHidden('form_id_2', $value['sell-form-title'])
+                                            ->setDefaultValue($params['cat_id']);                        
+                    }
+                    else
+                    {
+                        $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
+                                        //->addRule(Form::INTEGER, NULL)
+                                        //->addRule(Form::RANGE, NULL, array($value['sell-min-value'],$value['sell-max-value']))
+                                        ;
+                    }
                     break;
                 case 4:
                     $form_desc = (array) explode('|', $value['sell-form-desc']);
@@ -104,7 +104,8 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                     break;
                 case 7:
                     $container = $form  ->addUpload('form_id_' . $value['sell-form-id'], $value['sell-form-title'])
-                                        ->addRule(Form::IMAGE, NULL);
+                                        //->addRule(Form::IMAGE, NULL)
+                                        ;
                     break;
                 case 8:
                     $container = $form  ->addTextArea('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
@@ -114,15 +115,10 @@ class NetteFormHelper extends BaseFormHelper implements IFormHelper {
                     $container = $form  ->addText('form_id_' . $value['sell-form-id'], $value['sell-form-title']);
                     break;
             }
-            
-            switch ($value['sell-form-id']) {
-                case 2:
-                    $container->setDefaultValue($params['cat_id'])
-                              ->setDisabled(true);
-            }
         }
         
-        $this->_formContainer->addSubmit('add', 'Odeslat')->setAttribute('class', 'btn btn-success');;
+        if($this->formSubmitButton)
+            $this->_formContainer->addSubmit('add', 'Odeslat')->setAttribute('class', 'btn btn-success');;
         
         return $form = $this->_formContainer;
     }
